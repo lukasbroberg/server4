@@ -64,5 +64,5 @@ public class JwtService {
         Object role = parse(token).get("role");
         return role == null ? null : role.toString();
     }
-    
+
 }
