@@ -2,6 +2,7 @@ package com.example.Server4.Controllers;
 
 import com.example.Server4.entity.Problem;
 import com.example.Server4.repository.ProblemRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,12 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/problems")
-public class ProblemsController {
+public class ProblemController {
 
     private final ProblemRepository problemRepository;
 
-    public ProblemsController(ProblemRepository problemRepository) {
+    public ProblemController(ProblemRepository problemRepository) {
         this.problemRepository = problemRepository;
     }
 
