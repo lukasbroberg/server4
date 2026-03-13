@@ -10,9 +10,11 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String title;
     private String description;
     private LocalDateTime createdAt;
+
 
     public Problem() {
         this.createdAt = LocalDateTime.now();
