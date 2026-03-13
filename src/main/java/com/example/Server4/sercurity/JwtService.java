@@ -65,4 +65,8 @@ public class JwtService {
         return role == null ? null : role.toString();
     }
 
+    public boolean isTokenValid(String token) {
+        Claims claims = parse(token);
+        return claims.getExpiration().after(new Date());
+    }
 }

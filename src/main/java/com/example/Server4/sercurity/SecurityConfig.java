@@ -1,4 +1,4 @@
-package com.example.Server4;
+package com.example.Server4.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +14,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+    private final com.example.Server4.security.JwtAuthFilter jwtAuthFilter;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(com.example.Server4.security.JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
@@ -28,26 +28,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // H2 console dùng POST form => nên ignore CSRF cho /h2s
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2s", "/h2s/**", "/api/**"))
-
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/h2s", "/h2s/**").permitAll()   // <-- quan trọng: permit cả /h2s và /h2s/**
+                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+                        .requestMatchers("/auth/me").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
-
-                // H2 console cần frame
-                .headers(h -> h.frameOptions(f -> f.disable()))
-
-                // tắt basic & form login
                 .httpBasic(b -> b.disable())
                 .formLogin(f -> f.disable());
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
