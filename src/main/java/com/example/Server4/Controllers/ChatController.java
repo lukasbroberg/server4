@@ -15,7 +15,7 @@ public class ChatController {
     public void connectUserToChat(@PathVariable String chatId){
         //If not logged in throw exception and return
 
-        //If logged in: get webSocket for given chat, and assign user id to the current chat session
+        //If logged in: get all messages from the given chat.
 
     }
 
