@@ -1,7 +1,10 @@
 package com.example.Server4.STOMPWebSocket;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
@@ -9,9 +12,9 @@ import java.time.LocalDateTime;
 
 @Controller
 public class MessageController{
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public OutputMessage send( Message message) throws Exception{
+    @MessageMapping("/chat/{chatId}")
+    @SendTo("/topic/messages/{chatId}")
+    public OutputMessage send(@DestinationVariable String chatId, Message message) throws Exception{
         System.out.println("Output message: ");
         System.out.println(message.getMessage());
         System.out.println(message.getAuthor());
