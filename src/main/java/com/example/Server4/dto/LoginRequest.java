@@ -1,5 +1,5 @@
 package com.example.Server4.dto;
-// it ask for login request
+
 public class LoginRequest {
     private String username;
     private String password;

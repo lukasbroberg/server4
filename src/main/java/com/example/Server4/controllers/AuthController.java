@@ -1,4 +1,4 @@
-package com.example.Server4.controller;
+package com.example.Server4.controllers;
 
 import com.example.Server4.dto.AuthResponse;
 import com.example.Server4.dto.LoginRequest;
@@ -26,15 +26,31 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);*/
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            System.out.println("=== BAT DAU LOGIN ===");
+            System.out.println("username = " + request.getUsername());
+
+            AuthResponse response = authService.login(request);
+
+            System.out.println("=== LOGIN OK ===");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.out.println("=== LOGIN ERROR ===");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Login loi: " + e.getMessage());
+        }
     }
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
-        UserResponse response = authService.getCurrentUser(authentication.getName());
+        UserResponse response = authService.getCurrentUser(authentication);
         return ResponseEntity.ok(response);
     }
 }
